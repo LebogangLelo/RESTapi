@@ -1,0 +1,30 @@
+# Virtual environment
+env/
+*.pyc
+*.pyo
+__pycache__/
+
+# PostgreSQL-specific
+*.pgsql
+*.pgpass
+.pgdata/
+.pgsql_tmp/
+
+# Secrets and settings
+.env
+*.env
+
+# Logs
+*.log
+
+# IDE Files
+.vscode/
+.idea/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Django Specific
+media/
+static/
