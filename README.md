@@ -33,5 +33,5 @@ This project is a RESTful API for managing products on an e-commerce platform. I
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/yourusername/ecommerce-platform-api.git
-   cd ecommerce-platform-api
+   git clone https://github.com/LebogangLelo/RESTapi.git
+   cd e_commerce_project
