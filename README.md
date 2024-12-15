@@ -35,3 +35,39 @@ This project is a RESTful API for managing products on an e-commerce platform. I
    ```bash
    git clone https://github.com/LebogangLelo/RESTapi.git
    cd e_commerce_project
+
+# Authentication Setup for E-Commerce API
+
+This guide explains how to set up basic authentication for your e-commerce API using Django and Django REST Framework (DRF) with token-based authentication.
+
+## Setup Instructions
+
+### 1. Install Required Packages
+
+Ensure you have Django REST Framework and the DRF token authentication package installed:
+
+```bash
+ pip install djangorestframework
+ pip install djangorestframework-simplejwt
+
+Add rest_framework and rest_framework.authtoken to your INSTALLED_APPS. And Configure the default authentication classes to include TokenAuthentication
+
+## Create Token Authentication Endpoints with their serializers and views
+
+## How to test the authentication:
+You can use Postman to test your new authentication endpoints.
+
+#Register User
+URL: http://localhost:8000/auth/register/
+
+Method: POST
+
+Body: JSON data with username, email, and password
+
+#Login User
+URL: http://localhost:8000/api/auth/login/
+
+Method: POST
+
+Body: JSON data with username and password
+

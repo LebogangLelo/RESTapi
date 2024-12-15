@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'api',
+    'rest_framework.authtoken',
+    'authentication',
 ]
 
 MIDDLEWARE = [
@@ -74,12 +77,34 @@ WSGI_APPLICATION = 'e_commerce_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+#DATABASES = {
+    #'default': {
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': BASE_DIR / 'db.sqlite3',
+    #}
+#}
+
+REST_FRAMEWORK = { 
+    'DEFAULT_AUTHENTICATION_CLASSES': [ 
+        'rest_framework.authentication.TokenAuthentication', 
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        ], 
+        'DEFAULT_PERMISSION_CLASSES': [ 
+            'rest_framework.permissions.IsAuthenticated',
+        ],
+ }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'e_commerce_api',
+        'USER': 'postgres',
+        'PASSWORD': '@Mazabuka100',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+ # psql -U postgres -d e_commerce_api -h localhost -W
 
 
 # Password validation
