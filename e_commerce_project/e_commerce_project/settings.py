@@ -104,6 +104,10 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+ 
+ AUTH_USER_MODEL = 'your_app_name.CustomUser'
+
+ 
  # psql -U postgres -d e_commerce_api -h localhost -W
 
 
