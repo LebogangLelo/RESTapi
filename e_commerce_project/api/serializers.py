@@ -1,49 +1,48 @@
 from rest_framework import serializers
-from .models import User, Product
+from .models import Product, User, Order, Category
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
 
 class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
     class Meta:
         model = User
-        fields = '__all__'
-
-class ProductSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = '__all__'
-
-
-from rest_framework import serializers
-from .models import CustomUser
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomUser
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'is_seller', 'is_buyer']
-
-
-
-# serializers.py
-from rest_framework import serializers
-from .models import CustomUser, Product
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomUser
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'is_seller', 'is_buyer']
-
-class RegisterSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomUser
-        fields = ['email', 'password', 'first_name', 'last_name']
-        extra_kwargs = {'password': {'write_only': True}}
+        fields = ['id', 'username', 'email', 'password']
 
     def create(self, validated_data):
-        user = CustomUser.objects.create_user(**validated_data)
+        user = User.objects.create_user(**validated_data)
         return user
-
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'price', 'stock', 'image_url', 'category', 'created_at', 'updated_at']
+        fields = '__all__'
+
+    def validate(self, data):
+        if data.get('price') <= 0:
+            raise serializers.ValidationError("Price must be greater than zero.")
+        if data.get('stock_quantity') < 0:
+            raise serializers.ValidationError("Stock quantity cannot be negative.")
+        return data
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ['id', 'user', 'product', 'quantity', 'created_date']
+
+    def validate(self, data):
+        product = data['product']
+        if data['quantity'] > product.stock_quantity:
+            raise serializers.ValidationError("Insufficient stock available.")
+        return data
+
 

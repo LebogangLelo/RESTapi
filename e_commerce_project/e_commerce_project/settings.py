@@ -39,8 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'api',
-    'rest_framework.authtoken',
-    'authentication',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -84,15 +83,21 @@ WSGI_APPLICATION = 'e_commerce_project.wsgi.application'
     #}
 #}
 
-REST_FRAMEWORK = { 
-    'DEFAULT_AUTHENTICATION_CLASSES': [ 
-        'rest_framework.authentication.TokenAuthentication', 
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        ], 
-        'DEFAULT_PERMISSION_CLASSES': [ 
-            'rest_framework.permissions.IsAuthenticated',
-        ],
- }
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+}
 
 DATABASES = {
     'default': {
@@ -105,10 +110,17 @@ DATABASES = {
     }
 }
  
- AUTH_USER_MODEL = 'your_app_name.CustomUser'
+AUTH_USER_MODEL = 'api.User'
 
  
  # psql -U postgres -d e_commerce_api -h localhost -W
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
+
 
 
 # Password validation
