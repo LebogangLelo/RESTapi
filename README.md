@@ -24,17 +24,26 @@ This project is a RESTful API for managing products on an e-commerce platform. I
 ## **Technologies Used**
 - **Backend Framework**: Django, Django REST Framework (DRF)
 - **Database**: PostgreSQL
-- **Authentication**: Token-based authentication (JWT or OAuth2)
+- **Authentication**: Token-based authentication 
 - **Testing**: Pytest, Django Test Framework
-- **Documentation**: Swagger/OpenAPI (via drf-yasg)
+
 
 ### Setup
 
 1. **Clone the repository:**
-
-   ```bash
+bash
    git clone https://github.com/LebogangLelo/RESTapi.git
    cd e_commerce_project
+2. **create and activate a virtual environment:**
+bash
+     python -m venv env
+     source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+3. **Install the dependencies:**
+bash
+   pip install -r requirements.txt
+   
+
+
 
 # Authentication Setup for E-Commerce API
 
@@ -42,32 +51,108 @@ This guide explains how to set up basic authentication for your e-commerce API u
 
 ## Setup Instructions
 
-### 1. Install Required Packages
-
-Ensure you have Django REST Framework and the DRF token authentication package installed:
-
-```bash
- pip install djangorestframework
- pip install djangorestframework-simplejwt
+### 1. Ensure you have Django REST Framework and the DRF token authentication package installed:
 
 Add rest_framework and rest_framework.authtoken to your INSTALLED_APPS. And Configure the default authentication classes to include TokenAuthentication
 
-## Create Token Authentication Endpoints with their serializers and views
+## Create Token for Authentication to access Endpoints
+URL: http://localhost:8000/api-token-auth/
 
 ## How to test the authentication:
-You can use Postman to test your new authentication endpoints.
+    You can use Postman to test your new authentication endpoints.
 
-#Register User
-URL: http://localhost:8000/auth/register/
+**ENDPOINTS:**
+1. **Product Management**
 
+#Create Product: Add a new product.    (Admin only)
+Path: /api/products/
 Method: POST
 
-Body: JSON data with username, email, and password
+#Get Product: Retrieve product details by ID.
+Path: /api/products/{productId}
+Method: GET
 
-#Login User
-URL: http://localhost:8000/api/auth/login/
+#Update Product: Update product details by ID.   (Admin only)
+Path: /api/products/{productId}
+Method: PUT
 
+#Delete Product:  Delete product by ID.    (Admin only)
+Path: /api/products/{productId}
+Method: DELETE
+
+2. **User Management**
+
+#Create User: Register a new user.
+Path: /api/users/
 Method: POST
 
-Body: JSON data with username and password
+#Get User: Retrieve user details by ID.   (Admin or Self)
+Path:/api /users/{userId}
+Method: GET 
+
+#Update User: Update user details by ID.     (Admin or Self)
+Path: /api/users/{userId}
+Method: PUT
+
+#Delete User: Delete user by ID.      (Admin or Self)
+Path: /api/users/{userId}
+Method: DELETE
+
+3. **Product search and filtering**
+
+#Search for products by name or category.
+Path: /api/products/search/
+Method: GET 
+
+#Filter products by category, price range or stock availability.
+Path: /api/products/filter/
+Method: GET
+
+4. **Category Management**
+
+#List Categories: 
+Path: /api/categories/
+Method: GET
+
+#Create Category:   (Admin only)
+Path: /api/categories/
+Method: POST
+
+#Retrieve Category:
+Path: /api/categories/{id}/
+Method: GET 
+
+#Update Category:    (Admin only)
+Path: /api/categories/{id}/
+Method: PUT 
+
+#Delete Category:    (Admin only)
+Path: /api/categories/{id}/
+Method: DELETE 
+
+5. **Order Management**
+
+#List Orders:
+Path: /api/orders/
+Method: GET 
+
+#Create Order:
+Path: /api/orders/
+Method: POST 
+
+#Retrieve Order:
+Path: /api/orders/{id}/
+Method: GET 
+
+#Update Order:
+Path: /api/orders/{id}/
+Method: PUT 
+
+#Delete Order:
+Path: /api/orders/{id}/
+Method: DELETE 
+
+
+
+
 
