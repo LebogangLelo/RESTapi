@@ -1,5 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings 
+from django.db.models.signals import post_save, pre_save 
+from django.dispatch import receiver
 
 # Custom User Model
 class User(AbstractUser):
@@ -58,6 +61,11 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order by {self.user.username} for {self.product.name} (Quantity: {self.quantity})"
+    
+# Pre-save signal to calculate total price 
+@receiver(pre_save, sender=Order) 
+def calculate_total_price(sender, instance, **kwargs):
+    instance.total_price = instance.quantity * instance.product.price
     
  # Post-save signal to reduce stock quantity
 @receiver(post_save, sender=Order)
