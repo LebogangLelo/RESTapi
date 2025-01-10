@@ -109,37 +109,37 @@ class ProductListCreateView(generics.ListCreateAPIView):
          headers = self.get_success_headers(product_serializer.data)
          return Response(product_serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-
-
+    
 class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]  
 
     def get_permissions(self):
-         if self.request.method == 'DELETE':
-             return [IsAdminUser()]
-         return [IsAuthenticated]
+        if self.request.method == 'DELETE':
+            return [IsAdminUser()]
+        return super().get_permissions() 
 
     def update(self, request, *args, **kwargs):
-         partial = kwargs.pop('partial', False)
-         instance = self.get_object()
-         product_serializer = self.get_serializer(instance, data=request.data, partial=partial)
-         product_serializer.is_valid(raise_exception=True)
-         self.perform_update(product_serializer)
-         images_data = request.data.get('images') 
-         
-         if images_data:
-             ProductImage.objects.filter(product=instance).delete() 
-             for image_data in images_data:
-                 ProductImage.objects.create(product=instance, **image_data)
-                 
-         return Response(product_serializer.data)
-    
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        product_serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        product_serializer.is_valid(raise_exception=True)
+        self.perform_update(product_serializer)
+        images_data = request.data.get('images')
+
+        if images_data:
+            ProductImage.objects.filter(product=instance).delete()
+            for image_data in images_data:
+                ProductImage.objects.create(product=instance, **image_data)
+
+        return Response(product_serializer.data)
+
     def delete(self, request, *args, **kwargs):
-         instance = self.get_object()
-         instance.delete()
-         return Response(status=status.HTTP_204_NO_CONTENT)
+        instance = self.get_object()
+        instance.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 # Product Search and Filtering
 class ProductSearchView(generics.ListAPIView):
